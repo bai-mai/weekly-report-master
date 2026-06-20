@@ -1,652 +1,132 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>鍛ㄦ姤澶у笀 - AI 鍛ㄦ姤鐢熸垚鍣?/title>
-<script src="https://unpkg.com/lucide@latest">
-</script>
+<title>周报大师 - AI 周报生成器</title>
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
-/* ===== Reset & Base ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#f4f5f7;
-  --surface:#ffffff;
-  --border:#e2e4e8;
-  --text:#1a1d23;
-  --text-secondary:#6b7280;
-  --primary:#2563eb;
-  --primary-hover:#1d4ed8;
-  --primary-light:#eff6ff;
-  --radius:8px;
-  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
-  --shadow-lg:0 4px 12px rgba(0,0,0,.1);
-  --max-w:680px;
-  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC",sans-serif;
-}
+:root{--bg:#f4f5f7;--surface:#ffffff;--border:#e2e4e8;--text:#1a1d23;--text-secondary:#6b7280;--primary:#2563eb;--primary-hover:#1d4ed8;--radius:8px;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-lg:0 4px 12px rgba(0,0,0,.1);--max-w:680px;--font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC",sans-serif}
 html{font-size:16px}
-body{
-  font-family:var(--font);
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-}
-/* ===== Header ===== */
-.header{
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  padding:0 20px;
-  height:56px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:10;
-}
-.header-brand{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-weight:600;
-  font-size:17px;
-  color:var(--text);
-}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;position:sticky;top:0;z-index:10}
+.header-brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:17px;color:var(--text)}
 .header-brand svg{color:var(--primary)}
-.header-actions{display:flex;gap:4px}
-.icon-btn{
-  background:transparent;
-  border:none;
-  width:36px;
-  height:36px;
-  border-radius:var(--radius);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--text-secondary);
-  cursor:pointer;
-  position:relative;
-  transition:background .15s,color .15s;
-}
-.icon-btn:hover{background:#f0f1f3;color:var(--text)}
-.icon-btn[data-tooltip]:hover::after{
-  content:attr(data-tooltip);
-  position:absolute;
-  bottom:-28px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#1a1d23;
-  color:#fff;
-  font-size:12px;
-  padding:3px 8px;
-  border-radius:4px;
-  white-space:nowrap;
-  pointer-events:none;
-  z-index:20;
-}
-/* ===== Main Layout ===== */
-.container{
-  max-width:var(--max-w);
-  margin:0 auto;
-  padding:32px 20px 80px;
-}
-/* ===== Section Headings ===== */
-.section-label{
-  font-size:13px;
-  font-weight:600;
-  color:var(--text-secondary);
-  text-transform:uppercase;
-  letter-spacing:.04em;
-  margin-bottom:8px;
-}
-/* ===== Textarea ===== */
-.input-card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:16px;
-  margin-bottom:20px;
-  box-shadow:var(--shadow);
-}
-.input-card textarea{
-  width:100%;
-  min-height:160px;
-  border:none;
-  outline:none;
-  resize:vertical;
-  font-family:var(--font);
-  font-size:14px;
-  line-height:1.7;
-  color:var(--text);
-  background:transparent;
-  padding:0;
-}
+.container{max-width:var(--max-w);margin:0 auto;padding:32px 20px 80px}
+.section-label{font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.input-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:20px;box-shadow:var(--shadow)}
+.input-card textarea{width:100%;min-height:160px;border:none;outline:none;resize:vertical;font-family:var(--font);font-size:14px;line-height:1.7;color:var(--text);background:transparent;padding:0}
 .input-card textarea::placeholder{color:#adb5bd}
-.input-card .char-count{
-  font-size:12px;
-  color:var(--text-secondary);
-  text-align:right;
-  margin-top:6px;
-}
-/* ===== Controls Row ===== */
-.controls-row{
-  display:flex;
-  gap:16px;
-  margin-bottom:24px;
-  flex-wrap:wrap;
-}
-.control-group{
-  flex:1;
-  min-width:180px;
-}
-.control-group label{
-  display:block;
-  font-size:13px;
-  font-weight:500;
-  color:var(--text-secondary);
-  margin-bottom:6px;
-}
-.segmented{
-  display:flex;
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  overflow:hidden;
-  background:var(--surface);
-}
-.segmented button{
-  flex:1;
-  border:none;
-  background:transparent;
-  padding:7px 12px;
-  font-size:13px;
-  font-family:var(--font);
-  color:var(--text-secondary);
-  cursor:pointer;
-  transition:all .15s;
-  white-space:nowrap;
-}
+.input-card .char-count{font-size:12px;color:var(--text-secondary);text-align:right;margin-top:6px}
+.controls-row{display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.control-group{flex:1;min-width:180px}
+.control-group label{display:block;font-size:13px;font-weight:500;color:var(--text-secondary);margin-bottom:6px}
+.segmented{display:flex;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+.segmented button{flex:1;border:none;background:transparent;padding:7px 12px;font-size:13px;font-family:var(--font);color:var(--text-secondary);cursor:pointer;transition:all .15s;white-space:nowrap}
 .segmented button:not(:last-child){border-right:1px solid var(--border)}
-.segmented button.active{
-  background:var(--primary);
-  color:#fff;
-  font-weight:500;
-}
+.segmented button.active{background:var(--primary);color:#fff;font-weight:500}
 .segmented button:not(.active):hover{background:#f8f9fa}
-/* ===== Generate Button ===== */
 .generate-wrap{margin-bottom:32px}
-.btn-primary{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  width:100%;
-  padding:12px 24px;
-  border:none;
-  border-radius:var(--radius);
-  background:var(--primary);
-  color:#fff;
-  font-size:15px;
-  font-weight:600;
-  font-family:var(--font);
-  cursor:pointer;
-  transition:background .15s,transform .1s;
-}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 24px;border:none;border-radius:var(--radius);background:var(--primary);color:#fff;font-size:15px;font-weight:600;font-family:var(--font);cursor:pointer;transition:background .15s,transform .1s}
 .btn-primary:hover{background:var(--primary-hover)}
 .btn-primary:active{transform:scale(.98)}
 .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.btn-primary .spinner{
-  width:18px;height:18px;
-  border:2px solid rgba(255,255,255,.3);
-  border-top-color:#fff;
-  border-radius:50%;
-  animation:spin .6s linear infinite;
-}
+.btn-primary .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* ===== Output ===== */
-.output-card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
-.output-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:12px 16px;
-  border-bottom:1px solid var(--border);
-  background:#fafbfc;
-}
-.output-header .label{
-  font-size:13px;
-  font-weight:600;
-  color:var(--text-secondary);
-}
+.output-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.output-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:#fafbfc}
+.output-header .label{font-size:13px;font-weight:600;color:var(--text-secondary)}
 .output-actions{display:flex;gap:4px}
-.output-body{
-  padding:20px 24px;
-  font-size:14px;
-  line-height:1.8;
-  color:var(--text);
-  white-space:pre-wrap;
-  word-wrap:break-word;
-}
-.output-body .report-section{
-  margin-bottom:20px;
-}
+.icon-btn{background:transparent;border:none;width:36px;height:36px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:var(--text-secondary);cursor:pointer;position:relative;transition:background .15s,color .15s}
+.icon-btn:hover{background:#f0f1f3;color:var(--text)}
+.icon-btn[data-tooltip]:hover::after{content:attr(data-tooltip);position:absolute;bottom:-28px;left:50%;transform:translateX(-50%);background:#1a1d23;color:#fff;font-size:12px;padding:3px 8px;border-radius:4px;white-space:nowrap;pointer-events:none;z-index:20}
+.output-body{padding:20px 24px;font-size:14px;line-height:1.8;color:var(--text);white-space:pre-wrap;word-wrap:break-word}
+.output-body .report-section{margin-bottom:20px}
 .output-body .report-section:last-child{margin-bottom:0}
-.output-body .report-section h3{
-  font-size:14px;
-  font-weight:600;
-  color:var(--primary);
-  margin-bottom:8px;
-  padding-bottom:4px;
-  border-bottom:1px solid var(--border);
-}
-.output-body .report-section ul{
-  padding-left:20px;
-  margin:0;
-}
+.output-body .report-section h3{font-size:14px;font-weight:600;color:var(--primary);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.output-body .report-section ul{padding-left:20px;margin:0}
 .output-body .report-section li{margin-bottom:4px}
-.output-empty{
-  text-align:center;
-  padding:40px 24px;
-  color:var(--text-secondary);
-  font-size:14px;
-}
-.output-empty svg{
-  width:40px;height:40px;
-  margin-bottom:12px;
-  color:var(--border);
-}
-/* ===== Modal ===== */
-.modal-overlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.3);
-  z-index:100;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-.modal-overlay.open{display:flex}
-.modal{
-  background:var(--surface);
-  border-radius:12px;
-  width:100%;
-  max-width:440px;
-  box-shadow:var(--shadow-lg);
-  padding:24px;
-  position:relative;
-}
-.modal h2{
-  font-size:16px;
-  font-weight:600;
-  margin-bottom:4px;
-}
-.modal p{
-  font-size:13px;
-  color:var(--text-secondary);
-  margin-bottom:20px;
-  line-height:1.5;
-}
-.modal .form-group{margin-bottom:16px}
-.modal .form-group label{
-  display:block;
-  font-size:13px;
-  font-weight:500;
-  margin-bottom:6px;
-}
-.modal .form-group input{
-  width:100%;
-  padding:10px 12px;
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  font-size:14px;
-  font-family:var(--font);
-  outline:none;
-  transition:border-color .15s;
-}
-.modal .form-group input:focus{border-color:var(--primary)}
-.modal .modal-actions{
-  display:flex;
-  gap:8px;
-  justify-content:flex-end;
-  margin-top:20px;
-}
-.modal .modal-actions button{
-  padding:8px 20px;
-  border-radius:var(--radius);
-  font-size:14px;
-  font-family:var(--font);
-  cursor:pointer;
-  transition:all .15s;
-}
-.modal .btn-secondary{
-  border:1px solid var(--border);
-  background:transparent;
-  color:var(--text);
-}
-.modal .btn-secondary:hover{background:#f8f9fa}
-.modal .btn-primary-sm{
-  border:none;
-  background:var(--primary);
-  color:#fff;
-  font-weight:500;
-}
-.modal .btn-primary-sm:hover{background:var(--primary-hover)}
-.modal .status-badge{
-  display:inline-block;
-  font-size:12px;
-  padding:2px 8px;
-  border-radius:4px;
-  margin-top:8px;
-}
-.modal .status-badge.ok{background:#d1fae5;color:#065f46}
-.modal .status-badge.err{background:#fee2e2;color:#991b1b}
-.modal-close{
-  position:absolute;
-  top:16px;right:16px;
-  background:transparent;
-  border:none;
-  color:var(--text-secondary);
-  cursor:pointer;
-  width:32px;height:32px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:var(--radius);
-}
-.modal-close:hover{background:#f0f1f3}
-/* ===== Toast ===== */
-.toast{
-  position:fixed;
-  bottom:24px;
-  left:50%;
-  transform:translateX(-50%) translateY(80px);
-  background:#1a1d23;
-  color:#fff;
-  font-size:13px;
-  padding:10px 20px;
-  border-radius:var(--radius);
-  opacity:0;
-  transition:all .3s;
-  pointer-events:none;
-  z-index:200;
-}
+.output-empty{text-align:center;padding:40px 24px;color:var(--text-secondary);font-size:14px}
+.output-empty svg{width:40px;height:40px;margin-bottom:12px;color:var(--border)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1d23;color:#fff;font-size:13px;padding:10px 20px;border-radius:var(--radius);opacity:0;transition:all .3s;pointer-events:none;z-index:200}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-/* ===== Responsive ===== */
-@media(max-width:560px){
-  .container{padding:20px 16px 80px}
-  .controls-row{flex-direction:column;gap:12px}
-  .control-group{min-width:0}
-  .output-body{padding:16px}
-  .segmented button{padding:7px 8px;font-size:12px}
-}
+@media(max-width:560px){.container{padding:20px 16px 80px}.controls-row{flex-direction:column;gap:12px}.control-group{min-width:0}.output-body{padding:16px}.segmented button{padding:7px 8px;font-size:12px}}
 </style>
 </head>
 <body>
 <header class="header">
-  <div class="header-brand">
-    <i data-lucide="file-text" width="20" height="20"></i>
-    <span>鍛ㄦ姤澶у笀</span>
-  </div>
+  <div class="header-brand"><i data-lucide="file-text" width="20" height="20"></i><span>周报大师</span></div>
 </header>
 <div class="container">
-  </div>
-  <!-- Input -->
-  <div class="section-label">杈撳叆</div>
+  <div class="section-label">输入</div>
   <div class="input-card">
-    <textarea id="inputText" placeholder="鎶婅繖鍛ㄥ仛鐨勪簨绠€鍗曞啓涓嬫潵锛屾瘮濡傦細&#10;&#10;涓婄嚎浜嗙敤鎴疯瘎璁哄姛鑳?#10;淇浜嗕笁涓嚎涓?Bug&#10;璺熻璁″洟闃熷紑浜嗕袱娆￠渶姹傚榻愪細&#10;瀹屾垚浜嗙珵鍝佸垎鏋愭姤鍛婂垵绋?#10;缁欐柊浜哄仛浜嗗崐灏忔椂 onboarding"></textarea>
-    <div class="char-count"><span id="charCount">0</span> 瀛?/div>
+    <textarea id="inputText" placeholder="把这周做的事简单写下来，比如：&#10;&#10;上线了用户评论功能&#10;修复了三个线上 Bug&#10;跟设计团队开了两次需求对齐会&#10;完成了竞品分析报告初稿"></textarea>
+    <div class="char-count"><span id="charCount">0</span> 字</div>
   </div>
-  <!-- Controls -->
   <div class="controls-row">
     <div class="control-group">
-      <label>璇皵椋庢牸</label>
+      <label>语气风格</label>
       <div class="segmented" id="toneGroup">
-        <button class="active" data-value="姝ｅ紡">姝ｅ紡</button>
-        <button data-value="绠€娲?>绠€娲?/button>
-        <button data-value="閭€鍔熺増">閭€鍔熺増</button>
+        <button class="active" data-value="正式">正式</button>
+        <button data-value="简洁">简洁</button>
+        <button data-value="邀功版">邀功版</button>
       </div>
     </div>
     <div class="control-group">
-      <label>瑙掕壊</label>
+      <label>角色</label>
       <div class="segmented" id="roleGroup">
-        <button class="active" data-value="鏅€氬憳宸?>鏅€氬憳宸?/button>
-        <button data-value="绠＄悊鑰?>绠＄悊鑰?/button>
-        <button data-value="鑷敱鑱屼笟鑰?>鑷敱鑱屼笟鑰?/button>
+        <button class="active" data-value="普通员工">普通员工</button>
+        <button data-value="管理者">管理者</button>
+        <button data-value="自由职业者">自由职业者</button>
       </div>
     </div>
   </div>
-  <!-- Generate -->
   <div class="generate-wrap">
     <button class="btn-primary" id="generateBtn">
       <i data-lucide="wand-sparkles" width="18" height="18"></i>
-      <span>鐢熸垚鍛ㄦ姤</span>
+      <span>生成周报</span>
     </button>
   </div>
-  <!-- Output -->
-  <div class="section-label">杈撳嚭</div>
+  <div class="section-label">输出</div>
   <div class="output-card" id="outputCard">
     <div class="output-header">
-      <span class="label">鐢熸垚缁撴灉</span>
+      <span class="label">生成结果</span>
       <div class="output-actions">
-        <button class="icon-btn" id="copyBtn" data-tooltip="澶嶅埗鍒板壀璐存澘" aria-label="澶嶅埗" style="display:none">
-          <i data-lucide="clipboard" width="16" height="16"></i>
-        </button>
-        <button class="icon-btn" id="regenerateBtn" data-tooltip="閲嶆柊鐢熸垚" aria-label="閲嶆柊鐢熸垚" style="display:none">
-          <i data-lucide="refresh-cw" width="16" height="16"></i>
-        </button>
+        <button class="icon-btn" id="copyBtn" data-tooltip="复制到剪贴板" aria-label="复制" style="display:none"><i data-lucide="clipboard" width="16" height="16"></i></button>
+        <button class="icon-btn" id="regenerateBtn" data-tooltip="重新生成" aria-label="重新生成" style="display:none"><i data-lucide="refresh-cw" width="16" height="16"></i></button>
       </div>
     </div>
     <div class="output-body" id="outputBody">
       <div class="output-empty">
         <i data-lucide="file-text" width="40" height="40" style="display:block;margin:0 auto 12px"></i>
-        杈撳叆浣犵殑宸ヤ綔鍐呭锛岀偣鍑荤敓鎴愬嵆鍙幏寰椾笓涓氬懆鎶?      </div>
+        输入你的工作内容，点击生成即可获得专业周报
+      </div>
     </div>
   </div>
 </div>
-    </div>
-    <div class="form-group">
-      <label>濡備綍鑾峰彇鍏嶈垂瀵嗛挜</label>
-      <div style="font-size:13px;color:var(--text-secondary);line-height:1.6">
-        1. 璁块棶 <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--primary)">Google AI Studio</a>锛岀敤 Google 璐﹀彿鐧诲綍<br>
-        2. 鐐瑰嚮"鍒涘缓 API 瀵嗛挜"鎸夐挳<br>
-        3. 澶嶅埗瀵嗛挜锛岀矘璐村埌涓婇潰鐨勮緭鍏ユ<br>
-        4. 瀹屽叏鍏嶈垂锛屾棤闇€缁戝畾淇＄敤鍗?      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-secondary" id="modalCancelBtn">鍙栨秷</button>
-      <button class="btn-primary-sm" id="modalSaveBtn">淇濆瓨</button>
-    </div>
-  </div>
-</div>
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 <script>
-// ===== Lucide Icons =====
 lucide.createIcons();
-// ===== DOM refs =====
-const inputText = document.getElementById('inputText');
-const charCount = document.getElementById('charCount');
-const generateBtn = document.getElementById('generateBtn');
-const outputBody = document.getElementById('outputBody');
-const copyBtn = document.getElementById('copyBtn');
-const regenerateBtn = document.getElementById('regenerateBtn');
-const toastEl = document.getElementById('toast');
-// ===== Segmented Control =====
-document.querySelectorAll('.segmented').forEach(group => {
-  group.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-});
-// ===== Char Count =====
-inputText.addEventListener('input', () => {
-  const len = inputText.value.length;
-  charCount.textContent = len;
-});
-// ===== Toast Helper =====
-let toastTimer = null;
-function showToast(msg){
-  toastEl.textContent = msg;
-  toastEl.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2500);
-}
-// ===== API Key persistence =====
-async function callProxy(prompt){
-  const resp = await fetch('/api/generate-report', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(prompt)
-  });
-  if(!resp.ok){
-    const err = await resp.json();
-    throw new Error(err.error || `请求失败 (${resp.status})`);
-  }
-  const data = await resp.json();
-  const text = data.choices?.[0]?.message?.content || '';
-  return text;
-}
-}
-// ===== Build Prompt =====
-function buildPrompt(input, tone, role){
-  const system = `你是一个专业的周报写作助手。根据用户提供的零散工作记录，生成一份结构清晰、表达专业的周报。
-
-周报包含以下三个部分：
-1. 本周工作内容 - 将用户提供的工作记录整理成有条理的描述，用项目符号列出
-2. 关键成果 - 提炼本周最主要的工作成果，用数据或具体事实支撑
-3. 下周计划 - 基于本周工作推测合理的下周工作计划，2-3条，用项目符号列出
-
-语气风格：${tone}
-- 正式：标准职场用语，措辞严谨
-- 简洁：只说重点，每部分2-3句话
-- 邀功版：突出个人贡献和价值，适当包装成果
-
-角色：${role}
-- 普通员工：从执行者视角描述
-- 管理者：从团队管理和决策视角描述
-- 自由职业者：从项目交付和客户视角描述
-
-直接输出周报内容，不要输出额外说明。用 markdown 格式输出，三部分的标题用 ###。`;
-
-  return { system, userInput: input };
-}
-  let sectionContent = [];
-  function flushSection(){
-    if(currentSection && sectionContent.length > 0){
-      html += `<div class="report-section"><h3>${currentSection}</h3>`;
-      const joined = sectionContent.join('\n');
-      if(/^[-*]\s/m.test(joined)){
-        html += '<ul>';
-        sectionContent.forEach(line => {
-          if(/^[-*]\s/.test(line.trim())){
-            html += `<li>${line.trim().replace(/^[-*]\s/, '')}</li>`;
-          } else if(line.trim()){
-            html += `<li>${line.trim()}</li>`;
-          }
-        });
-        html += '</ul>';
-      } else {
-        sectionContent.forEach(line => {
-          if(line.trim()) html += `<p>${line.trim()}</p>`;
-        });
-      }
-      html += '</div>';
-    }
-    sectionContent = [];
-  }
-  lines.forEach(line => {
-    if(/^###\s/.test(line.trim())){
-      flushSection();
-      currentSection = line.trim().replace(/^###\s*/, '');
-    } else if(currentSection){
-      sectionContent.push(line);
-    } else {
-      if(line.trim()) html += `<p>${line.trim()}</p>`;
-    }
-  });
-  flushSection();
-  if(!html) html = `<div class="report-section"><p>${text.replace(/\n/g, '<br>')}</p></div>`;
-  return html;
-}
-// ===== Generate =====
-async function generate(){
-  const input = inputText.value.trim();
-  if(!input){
-    showToast('璇疯緭鍏ヨ繖鍛ㄧ殑宸ヤ綔鍐呭');
-    inputText.focus();
-    return;
-  }
-  const tone = document.querySelector('#toneGroup .active')?.dataset?.value || '姝ｅ紡';
-  const role = document.querySelector('#roleGroup .active')?.dataset?.value || '鏅€氬憳宸?;
-  generateBtn.disabled = true;
-  generateBtn.innerHTML = '<div class="spinner"></div><span>鐢熸垚涓?..</span>';
-  outputBody.innerHTML = '<div class="output-empty"><div class="spinner" style="margin:0 auto 12px"></div>姝ｅ湪鐢熸垚鍛ㄦ姤...</div>';
-  copyBtn.style.display = 'none';
-  regenerateBtn.style.display = 'none';
-  try {
-    const prompt = buildPrompt(input, tone, role);
-    const result = await callProxy(prompt);
-    const html = formatOutput(result);
-    outputBody.innerHTML = html;
-    copyBtn.style.display = '';
-    regenerateBtn.style.display = '';
-    showToast('鍛ㄦ姤鐢熸垚瀹屾垚');
-  } catch(err){
-    outputBody.innerHTML = `
-      <div class="output-empty">
-        <i data-lucide="alert-circle" width="40" height="40" style="display:block;margin:0 auto 12px;color:#ef4444"></i>
-        <div style="color:#991b1b;font-weight:500;margin-bottom:4px">鐢熸垚澶辫触</div>
-        <div style="font-size:13px">${err.message}</div>
-      </div>`;
-    lucide.createIcons();
-    showToast('鐢熸垚澶辫触: ' + err.message);
-  } finally {
-    generateBtn.disabled = false;
-    generateBtn.innerHTML = '<i data-lucide="wand-sparkles" width="18" height="18"></i><span>鐢熸垚鍛ㄦ姤</span>';
-    lucide.createIcons();
-  }
-}
-generateBtn.addEventListener('click', generate);
-regenerateBtn.addEventListener('click', generate);
-// ===== Copy =====
-copyBtn.addEventListener('click', async () => {
-  const text = outputBody.textContent || '';
-  if(!text.trim()){
-    showToast('娌℃湁鍐呭鍙鍒?);
-    return;
-  }
-  try {
-    await navigator.clipboard.writeText(text.trim());
-    const icon = copyBtn.querySelector('i');
-    icon.setAttribute('data-lucide', 'check');
-    lucide.createIcons();
-    showToast('宸插鍒跺埌鍓创鏉?);
-    setTimeout(() => {
-      icon.setAttribute('data-lucide', 'clipboard');
-      lucide.createIcons();
-    }, 1500);
-  } catch(e){
-    showToast('澶嶅埗澶辫触锛岃鎵嬪姩澶嶅埗');
-  }
-});
-// ===== Keyboard shortcut =====
-document.addEventListener('keydown', (e) => {
-  if((e.ctrlKey || e.metaKey) && e.key === 'Enter'){
-    e.preventDefault();
-    generate();
-  }
-});
-// ===== Init =====
+var inputText=document.getElementById('inputText');
+var charCount=document.getElementById('charCount');
+var generateBtn=document.getElementById('generateBtn');
+var outputBody=document.getElementById('outputBody');
+var copyBtn=document.getElementById('copyBtn');
+var regenerateBtn=document.getElementById('regenerateBtn');
+var toastEl=document.getElementById('toast');
+document.querySelectorAll('.segmented').forEach(function(g){g.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){g.querySelectorAll('button').forEach(function(x){x.classList.remove('active')});b.classList.add('active')})})});
+inputText.addEventListener('input',function(){charCount.textContent=inputText.value.length});
+var toastTimer=null;
+function showToast(m){toastEl.textContent=m;toastEl.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){toastEl.classList.remove('show')},2500)}
+async function callProxy(prompt){var resp=await fetch('/api/generate-report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(prompt)});if(!resp.ok){var e=await resp.json();throw new Error(e.error||'请求失败 ('+resp.status+')')}var d=await resp.json();return (d.choices?.[0]?.message?.content||'')}
+function buildPrompt(input,tone,role){var system='你是一个专业的周报写作助手。根据用户提供的零散工作记录，生成一份结构清晰、表达专业的周报。\n\n周报包含以下三个部分：\n1. 本周工作内容 - 将用户提供的工作记录整理成有条理的描述，用项目符号列出\n2. 关键成果 - 提炼本周最主要的工作成果，用数据或具体事实支撑\n3. 下周计划 - 基于本周工作推测合理的下周工作计划，2-3条，用项目符号列出\n\n语气风格：'+tone+'\n- 正式：标准职场用语，措辞严谨\n- 简洁：只说重点，每部分2-3句话\n- 邀功版：突出个人贡献和价值，适当包装成果\n\n角色：'+role+'\n- 普通员工：从执行者视角描述\n- 管理者：从团队管理和决策视角描述\n- 自由职业者：从项目交付和客户视角描述\n\n直接输出周报内容，不要输出额外说明。用 markdown 格式输出，三部分的标题用 ###。';return{system:system,userInput:input}}
+function formatOutput(text){var h='';var lines=text.split('\n');var currentSection=null;var sectionContent=[];function flushSection(){if(currentSection&&sectionContent.length>0){h+='<div class="report-section"><h3>'+currentSection+'</h3>';var j=sectionContent.join('\n');if(/^[-*]\s/m.test(j)){h+='<ul>';sectionContent.forEach(function(l){if(/^[-*]\s/.test(l.trim())){h+='<li>'+l.trim().replace(/^[-*]\s/,'')+'</li>'}else if(l.trim()){h+='<li>'+l.trim()+'</li>'}});h+='</ul>'}else{sectionContent.forEach(function(l){if(l.trim())h+='<p>'+l.trim()+'</p>'})}h+='</div>'}sectionContent=[]}lines.forEach(function(l){if(/^###\s/.test(l.trim())){flushSection();currentSection=l.trim().replace(/^###\s*/,'')}else if(currentSection){sectionContent.push(l)}else{if(l.trim())h+='<p>'+l.trim()+'</p>'}});flushSection();if(!h)h='<div class="report-section"><p>'+text.replace(/\n/g,'<br>')+'</p></div>';return h}
+async function generate(){var apiKey='dummy';var input=inputText.value.trim();if(!input){showToast('请输\u5165这周的工作内容');inputText.focus();return}var tone=(document.querySelector('#toneGroup .active')?.dataset?.value)||'正式';var role=(document.querySelector('#roleGroup .active')?.dataset?.value)||'普通员工';generateBtn.disabled=true;generateBtn.innerHTML='<div class="spinner"></div><span>生成中...</span>';outputBody.innerHTML='<div class="output-empty"><div class="spinner" style="margin:0 auto 12px"></div>正在生成周报...</div>';copyBtn.style.display='none';regenerateBtn.style.display='none';try{var prompt=buildPrompt(input,tone,role);var result=await callProxy(prompt);outputBody.innerHTML=formatOutput(result);copyBtn.style.display='';regenerateBtn.style.display='';showToast('\u5468报生成完成')}catch(err){outputBody.innerHTML='<div class="output-empty"><i data-lucide="alert-circle" width="40" height="40" style="display:block;margin:0 auto 12px;color:#ef4444"></i><div style="color:#991b1b;font-weight:500;margin-bottom:4px">生成失败</div><div style="font-size:13px">'+err.message+'</div></div>';lucide.createIcons();showToast('\u751f\u6210\u5931\u8d25: '+err.message)}finally{generateBtn.disabled=false;generateBtn.innerHTML='<i data-lucide="wand-sparkles" width="18" height="18"></i><span>生成周报</span>';lucide.createIcons()}}
+generateBtn.addEventListener('click',generate);
+regenerateBtn.addEventListener('click',generate);
+copyBtn.addEventListener('click',async function(){var t=(outputBody.textContent||'').trim();if(!t){showToast('没有内容可复制');return}try{await navigator.clipboard.writeText(t);var ic=copyBtn.querySelector('i');ic.setAttribute('data-lucide','check');lucide.createIcons();showToast('已复制到剪贴板');setTimeout(function(){ic.setAttribute('data-lucide','clipboard');lucide.createIcons()},1500)}catch(e){showToast('复制失败，请手动复制')}});
+document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();generate()}});
 lucide.createIcons();
 </script>
 </body>
