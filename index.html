@@ -502,44 +502,44 @@ function showToast(msg){
   toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2500);
 }
 // ===== API Key persistence =====
-// ===== Backend Proxy call =====
 async function callProxy(prompt){
   const resp = await fetch('/api/generate-report', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ prompt })
+    body: JSON.stringify(prompt)
   });
   if(!resp.ok){
     const err = await resp.json();
-    throw new Error(err.error || `璇锋眰澶辫触 (${resp.status})`);
+    throw new Error(err.error || `请求失败 (${resp.status})`);
   }
   const data = await resp.json();
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  const text = data.choices?.[0]?.message?.content || '';
   return text;
+}
 }
 // ===== Build Prompt =====
 function buildPrompt(input, tone, role){
-  return `浣犳槸涓€涓笓涓氱殑鍛ㄦ姤鍐欎綔鍔╂墜銆傛牴鎹敤鎴锋彁渚涚殑闆舵暎宸ヤ綔璁板綍锛岀敓鎴愪竴浠界粨鏋勬竻鏅般€佽〃杈句笓涓氱殑鍛ㄦ姤銆?
-鍛ㄦ姤鍖呭惈浠ヤ笅涓変釜閮ㄥ垎锛?1. 鏈懆宸ヤ綔鍐呭 - 灏嗙敤鎴锋彁渚涚殑宸ヤ綔璁板綍鏁寸悊鎴愭湁鏉＄悊鐨勬弿杩帮紝鐢ㄩ」鐩鍙峰垪鍑?2. 鍏抽敭鎴愭灉 - 鎻愮偧鏈懆鏈€涓昏鐨勫伐浣滄垚鏋滐紝鐢ㄦ暟鎹垨鍏蜂綋浜嬪疄鏀拺
-3. 涓嬪懆璁″垝 - 鍩轰簬鏈懆宸ヤ綔鎺ㄦ祴鍚堢悊鐨勪笅鍛ㄥ伐浣滆鍒掞紝2-3鏉★紝鐢ㄩ」鐩鍙峰垪鍑?
-璇皵椋庢牸锛?{tone}
-- 姝ｅ紡锛氭爣鍑嗚亴鍦虹敤璇紝鎺緸涓ヨ皑
-- 绠€娲侊細鍙閲嶇偣锛屾瘡閮ㄥ垎2-3鍙ヨ瘽
-- 閭€鍔熺増锛氱獊鍑轰釜浜鸿础鐚拰浠峰€硷紝閫傚綋鍖呰鎴愭灉
+  const system = `你是一个专业的周报写作助手。根据用户提供的零散工作记录，生成一份结构清晰、表达专业的周报。
 
-瑙掕壊锛?{role}
-- 鏅€氬憳宸ワ細浠庢墽琛岃€呰瑙掓弿杩?- 绠＄悊鑰咃細浠庡洟闃熺鐞嗗拰鍐崇瓥瑙嗚鎻忚堪
-- 鑷敱鑱屼笟鑰咃細浠庨」鐩氦浠樺拰瀹㈡埛瑙嗚鎻忚堪
+周报包含以下三个部分：
+1. 本周工作内容 - 将用户提供的工作记录整理成有条理的描述，用项目符号列出
+2. 关键成果 - 提炼本周最主要的工作成果，用数据或具体事实支撑
+3. 下周计划 - 基于本周工作推测合理的下周工作计划，2-3条，用项目符号列出
 
-鐩存帴杈撳嚭鍛ㄦ姤鍐呭锛屼笉瑕佽緭鍑洪澶栬鏄庛€傜敤 markdown 鏍煎紡杈撳嚭锛岀浜岄儴鍒嗗拰绗笁閮ㄥ垎鐨勬爣棰樼敤 ###銆?
-鐢ㄦ埛鐨勫伐浣滆褰曪細
-${input}`;
+语气风格：${tone}
+- 正式：标准职场用语，措辞严谨
+- 简洁：只说重点，每部分2-3句话
+- 邀功版：突出个人贡献和价值，适当包装成果
+
+角色：${role}
+- 普通员工：从执行者视角描述
+- 管理者：从团队管理和决策视角描述
+- 自由职业者：从项目交付和客户视角描述
+
+直接输出周报内容，不要输出额外说明。用 markdown 格式输出，三部分的标题用 ###。`;
+
+  return { system, userInput: input };
 }
-// ===== Format Output =====
-function formatOutput(text){
-  let html = '';
-  const lines = text.split('\n');
-  let currentSection = null;
   let sectionContent = [];
   function flushSection(){
     if(currentSection && sectionContent.length > 0){

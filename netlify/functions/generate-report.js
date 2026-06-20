@@ -3,35 +3,45 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  const { prompt } = JSON.parse(event.body);
-  const apiKey = process.env.GEMINI_API_KEY;
+  const { system, userInput } = JSON.parse(event.body);
+  const apiKey = process.env.DEEPSEEK_API_KEY;
 
   if (!apiKey) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'GEMINI_API_KEY not configured' }),
+      body: JSON.stringify({ error: 'DEEPSEEK_API_KEY not configured. Get a free key at platform.deepseek.com' }),
       headers: { 'Content-Type': 'application/json' }
     };
   }
 
+  const messages = [];
+  if (system) {
+    messages.push({ role: 'system', content: system });
+  }
+  if (userInput) {
+    messages.push({ role: 'user', content: userInput });
+  }
+
   try {
-    const resp = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 1024 }
-        })
-      }
-    );
+    const resp = await fetch('https://api.deepseek.com/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: messages,
+        temperature: 0.7,
+        max_tokens: 1024
+      })
+    });
 
     if (!resp.ok) {
       const errText = await resp.text();
       return {
         statusCode: resp.status,
-        body: JSON.stringify({ error: `Gemini API error: ${errText}` }),
+        body: JSON.stringify({ error: `DeepSeek API error: ${errText}` }),
         headers: { 'Content-Type': 'application/json' }
       };
     }
