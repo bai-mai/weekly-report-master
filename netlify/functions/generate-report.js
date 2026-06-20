@@ -4,12 +4,12 @@ exports.handler = async (event) => {
   }
 
   const { system, userInput } = JSON.parse(event.body);
-  const apiKey = process.env.SILICONFLOW_API_KEY;
+  const apiKey = process.env.DEEPSEEK_API_KEY;
 
   if (!apiKey) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'SILICONFLOW_API_KEY not configured. Get a free key at cloud.siliconflow.cn' }),
+      body: JSON.stringify({ error: 'DEEPSEEK_API_KEY not configured. Get a free key at platform.deepseek.com. Get a free key at cloud.siliconflow.cn' }),
       headers: { 'Content-Type': 'application/json' }
     };
   }
@@ -23,14 +23,14 @@ exports.handler = async (event) => {
   }
 
   try {
-    const resp = await fetch('https://api.siliconflow.com/v1/chat/completions', {
+    const resp = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'Qwen/Qwen2.5-7B-Instruct',
+        model: 'deepseek-chat',
         messages: messages,
         temperature: 0.7,
         max_tokens: 1024
@@ -41,7 +41,7 @@ exports.handler = async (event) => {
       const errText = await resp.text();
       return {
         statusCode: resp.status,
-        body: JSON.stringify({ error: `SiliconFlow API error: ${errText}` }),
+        body: JSON.stringify({ error: `DeepSeek API error: ${errText}` }),
         headers: { 'Content-Type': 'application/json' }
       };
     }
