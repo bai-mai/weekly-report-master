@@ -1,0 +1,10 @@
+[build]
+  command = "echo 'Static site, no build needed'"
+  publish = "."
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/generate-report"
+  to = "/.netlify/functions/generate-report"
+  status = 200
+  force = true
