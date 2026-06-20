@@ -30,7 +30,7 @@ exports.handler = async (event) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'deepseek-ai/DeepSeek-V2.5',
+        model: 'Qwen/Qwen2.5-7B-Instruct',
         messages: messages,
         temperature: 0.7,
         max_tokens: 1024
