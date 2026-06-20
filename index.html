@@ -7,14 +7,14 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f4f5f7;--surface:#ffffff;--border:#e2e4e8;--text:#1a1d23;--text-secondary:#6b7280;--primary:#2563eb;--primary-hover:#1d4ed8;--radius:8px;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-lg:0 4px 12px rgba(0,0,0,.1);--max-w:680px;--font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC",sans-serif}
+:root{--bg:#f4f5f7;--surface:#ffffff;--border:#e2e4e8;--text:#1a1d23;--text-secondary:#6b7280;--primary:#2563eb;--radius:8px;--shadow:0 1px 3px rgba(0,0,0,.08);--max-w:680px;--font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC",sans-serif}
 html{font-size:16px}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased}
-.header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;position:sticky;top:0;z-index:10}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center}
 .header-brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:17px;color:var(--text)}
 .header-brand svg{color:var(--primary)}
 .container{max-width:var(--max-w);margin:0 auto;padding:32px 20px 80px}
-.section-label{font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.section-label{font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;margin-bottom:8px}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:20px;box-shadow:var(--shadow)}
 .input-card textarea{width:100%;min-height:160px;border:none;outline:none;resize:vertical;font-family:var(--font);font-size:14px;line-height:1.7;color:var(--text);background:transparent;padding:0}
 .input-card textarea::placeholder{color:#adb5bd}
@@ -23,158 +23,100 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .control-group{flex:1;min-width:180px}
 .control-group label{display:block;font-size:13px;font-weight:500;color:var(--text-secondary);margin-bottom:6px}
 .segmented{display:flex;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
-.segmented button{flex:1;border:none;background:transparent;padding:7px 12px;font-size:13px;font-family:var(--font);color:var(--text-secondary);cursor:pointer;transition:all .15s;white-space:nowrap}
+.segmented button{flex:1;border:none;background:transparent;padding:7px 12px;font-size:13px;font-family:var(--font);color:var(--text-secondary);cursor:pointer;transition:all .15s}
 .segmented button:not(:last-child){border-right:1px solid var(--border)}
 .segmented button.active{background:var(--primary);color:#fff;font-weight:500}
-.segmented button:not(.active):hover{background:#f8f9fa}
 .generate-wrap{margin-bottom:32px}
-.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 24px;border:none;border-radius:var(--radius);background:var(--primary);color:#fff;font-size:15px;font-weight:600;font-family:var(--font);cursor:pointer;transition:background .15s,transform .1s}
-.btn-primary:hover{background:var(--primary-hover)}
-.btn-primary:active{transform:scale(.98)}
-.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 24px;border:none;border-radius:var(--radius);background:var(--primary);color:#fff;font-size:15px;font-weight:600;font-family:var(--font);cursor:pointer;transition:background .15s}
+.btn-primary:hover{background:#1d4ed8}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
 .btn-primary .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .output-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
 .output-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:#fafbfc}
 .output-header .label{font-size:13px;font-weight:600;color:var(--text-secondary)}
 .output-actions{display:flex;gap:4px}
-.icon-btn{background:transparent;border:none;width:36px;height:36px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:var(--text-secondary);cursor:pointer;position:relative;transition:background .15s,color .15s}
+.icon-btn{background:transparent;border:none;width:36px;height:36px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:var(--text-secondary);cursor:pointer;transition:background .15s}
 .icon-btn:hover{background:#f0f1f3;color:var(--text)}
 .icon-btn[data-tooltip]:hover::after{content:attr(data-tooltip);position:absolute;bottom:-28px;left:50%;transform:translateX(-50%);background:#1a1d23;color:#fff;font-size:12px;padding:3px 8px;border-radius:4px;white-space:nowrap;pointer-events:none;z-index:20}
-.output-body{padding:20px 24px;font-size:14px;line-height:1.8;color:var(--text);white-space:pre-wrap;word-wrap:break-word}
+.output-body{padding:20px 24px;font-size:14px;line-height:1.8;white-space:pre-wrap;word-wrap:break-word}
 .output-body .report-section{margin-bottom:20px}
-.output-body .report-section:last-child{margin-bottom:0}
-.output-body .report-section h3{font-size:14px;font-weight:600;color:var(--primary);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
-.output-body .report-section ul{padding-left:20px;margin:0}
-.output-body .report-section li{margin-bottom:4px}
-.output-empty{text-align:center;padding:40px 24px;color:var(--text-secondary);font-size:14px}
-.output-empty svg{width:40px;height:40px;margin-bottom:12px;color:var(--border)}
+.output-body .report-section h3{font-size:14px;font-weight:600;color:var(--primary);margin-bottom:8px;border-bottom:1px solid var(--border)}
+.output-body .report-section ul{padding-left:20px}
+.output-empty{text-align:center;padding:40px 24px;color:var(--text-secondary)}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1d23;color:#fff;font-size:13px;padding:10px 20px;border-radius:var(--radius);opacity:0;transition:all .3s;pointer-events:none;z-index:200}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:560px){.container{padding:20px 16px 80px}.controls-row{flex-direction:column;gap:12px}.control-group{min-width:0}.output-body{padding:16px}.segmented button{padding:7px 8px;font-size:12px}}
-.paywall-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;padding:20px}.paywall-overlay.open{display:flex}.paywall{background:#fff;border-radius:12px;max-width:460px;width:100%;padding:28px 24px;box-shadow:0 8px 32px rgba(0,0,0,.15);position:relative;max-height:90vh;overflow-y:auto}.paywall h2{font-size:18px;font-weight:700;margin-bottom:4px;text-align:center}.paywall .sub{font-size:13px;color:#6b7280;text-align:center;margin-bottom:20px}.usage-bar{text-align:center;margin-bottom:20px}.usage-bar .count{font-size:36px;font-weight:700;color:#2563eb}.usage-bar .label{font-size:13px;color:#6b7280}.pricing-row{display:flex;gap:12px;margin-bottom:20px}.pricing-card{flex:1;border:1px solid #e2e4e8;border-radius:8px;padding:14px;text-align:center}.pricing-card .price{font-size:22px;font-weight:700;color:#1a1d23}.pricing-card .price span{font-size:13px;color:#6b7280}.pricing-card .desc{font-size:12px;color:#6b7280;margin-top:4px}.qr-section{text-align:center;margin-bottom:20px;padding:16px;background:#f8f9fa;border-radius:8px}.qr-section .qr-label{font-size:13px;font-weight:500;margin-bottom:8px}.qr-section .qr-hint{font-size:12px;color:#6b7280;margin-top:6px}.qr-row{display:flex;gap:16px;justify-content:center}.qr-box{width:120px;height:140px;background:#fff;border:1px solid #e2e4e8;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px}.qr-box .qr-placeholder{width:100px;height:100px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-size:12px;color:#6b7280}.qr-box .qr-name{font-size:11px;color:#6b7280;margin-top:4px}.unlock-section{border-top:1px solid #e2e4e8;padding-top:16px}.unlock-section label{font-size:13px;font-weight:500;display:block;margin-bottom:6px}.unlock-row{display:flex;gap:8px}.unlock-row input{flex:1;padding:8px 12px;border:1px solid #e2e4e8;border-radius:6px;font-size:14px;font-family:var(--font);outline:none}.unlock-row input:focus{border-color:#2563eb}.unlock-row button{padding:8px 20px;background:#2563eb;border:none;border-radius:6px;color:#fff;font-size:14px;font-family:var(--font);cursor:pointer}.unlock-row button:hover{background:#1d4ed8}.unlock-msg{font-size:13px;margin-top:6px}.unlock-msg.ok{color:#065f46}.unlock-msg.err{color:#991b1b}.footer-note{text-align:center;font-size:11px;color:#adb5bd;margin-top:12px}</style>
+.paywall-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;padding:20px}
+.paywall-overlay.open{display:flex}
+.paywall{background:#fff;border-radius:12px;max-width:460px;width:100%;padding:28px 24px;box-shadow:0 8px 32px rgba(0,0,0,.15);max-height:90vh;overflow-y:auto}
+.paywall h2{font-size:18px;font-weight:700;margin-bottom:4px;text-align:center}
+.paywall .sub{font-size:13px;color:#6b7280;text-align:center;margin-bottom:20px}
+.usage-bar{text-align:center;margin-bottom:20px}
+.usage-bar .count{font-size:36px;font-weight:700;color:#2563eb}
+.usage-bar .label{font-size:13px;color:#6b7280}
+.pricing-row{display:flex;gap:12px;margin-bottom:20px}
+.pricing-card{flex:1;border:1px solid #e2e4e8;border-radius:8px;padding:14px;text-align:center}
+.pricing-card .price{font-size:22px;font-weight:700}
+.pricing-card .price span{font-size:13px;font-weight:400;color:#6b7280}
+.qr-section{text-align:center;margin-bottom:20px;padding:16px;background:#f8f9fa;border-radius:8px}
+.qr-section .qr-label{font-size:13px;font-weight:500;margin-bottom:8px}
+.qr-row{display:flex;gap:16px;justify-content:center}
+.qr-box{width:120px;height:140px;background:#fff;border:1px solid #e2e4e8;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px}
+.qr-box .qr-placeholder{width:100px;height:100px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-size:12px;color:#6b7280}
+.qr-box .qr-name{font-size:11px;color:#6b7280;margin-top:4px}
+.unlock-section{border-top:1px solid #e2e4e8;padding-top:16px}
+.unlock-section label{font-size:13px;font-weight:500;display:block;margin-bottom:6px}
+.unlock-row{display:flex;gap:8px}
+.unlock-row input{flex:1;padding:8px 12px;border:1px solid #e2e4e8;border-radius:6px;font-size:14px;font-family:var(--font);outline:none}
+.unlock-row input:focus{border-color:#2563eb}
+.unlock-row button{padding:8px 20px;background:#2563eb;border:none;border-radius:6px;color:#fff;font-size:14px;font-family:var(--font);cursor:pointer}
+.unlock-row button:hover{background:#1d4ed8}
+.unlock-msg{font-size:13px;margin-top:6px;min-height:20px}
+.unlock-msg.ok{color:#065f46}
+.unlock-msg.err{color:#991b1b}
+.footer-note{text-align:center;font-size:11px;color:#adb5bd;margin-top:12px}
+.code-bar{text-align:center;padding:12px 20px 0;font-size:13px;color:#6b7280;display:none}
+.code-bar .code{font-weight:600;color:#2563eb;letter-spacing:1px}
+.code-bar .hint{font-size:11px;color:#adb5bd;margin-left:8px}
+@media(max-width:560px){.container{padding:20px 16px 80px}.controls-row{flex-direction:column}.output-body{padding:16px}}
+</style>
 </head>
 <body>
-<header class="header">
-  <div class="header-brand"><i data-lucide="file-text" width="20" height="20"></i><span>周报大师</span></div>
-</header>
+<div class="header"><div class="header-brand"><i data-lucide="file-text" width="20" height="20"></i><span>周报大师</span></div></div>
 <div class="container">
-  <div class="section-label">输入</div>
-  <div class="input-card">
-    <textarea id="inputText" placeholder="把这周做的事简单写下来，比如：&#10;&#10;上线了用户评论功能&#10;修复了三个线上 Bug&#10;跟设计团队开了两次需求对齐会&#10;完成了竞品分析报告初稿"></textarea>
-    <div class="char-count"><span id="charCount">0</span> 字</div>
-  </div>
-  <div class="controls-row">
-    <div class="control-group">
-      <label>语气风格</label>
-      <div class="segmented" id="toneGroup">
-        <button class="active" data-value="正式">正式</button>
-        <button data-value="简洁">简洁</button>
-        <button data-value="邀功版">邀功版</button>
-      </div>
-    </div>
-    <div class="control-group">
-      <label>角色</label>
-      <div class="segmented" id="roleGroup">
-        <button class="active" data-value="普通员工">普通员工</button>
-        <button data-value="管理者">管理者</button>
-        <button data-value="自由职业者">自由职业者</button>
-      </div>
-    </div>
-  </div>
-  <div class="generate-wrap">
-    <button class="btn-primary" id="generateBtn">
-      <i data-lucide="wand-sparkles" width="18" height="18"></i>
-      <span>生成周报</span>
-    </button>
-  </div>
-  <div class="section-label">输出</div>
-  <div class="output-card" id="outputCard">
-    <div class="output-header">
-      <span class="label">生成结果</span>
-      <div class="output-actions">
-        <button class="icon-btn" id="copyBtn" data-tooltip="复制到剪贴板" aria-label="复制" style="display:none"><i data-lucide="clipboard" width="16" height="16"></i></button>
-        <button class="icon-btn" id="regenerateBtn" data-tooltip="重新生成" aria-label="重新生成" style="display:none"><i data-lucide="refresh-cw" width="16" height="16"></i></button>
-      </div>
-    </div>
-    <div class="output-body" id="outputBody">
-      <div class="output-empty">
-        <i data-lucide="file-text" width="40" height="40" style="display:block;margin:0 auto 12px"></i>
-        输入你的工作内容，点击生成即可获得专业周报
-      </div>
-    </div>
-  </div>
+<div class="section-label">输入</div>
+<div class="input-card">
+<textarea id="inputText" placeholder="把这周做的事简单写下来，比如：&#10;&#10;上线了用户评论功能&#10;修复了三个线上 Bug&#10;跟设计团队开了两次需求对齐会&#10;完成了竞品分析报告初稿"></textarea>
+<div class="char-count"><span id="charCount">0</span> 字</div>
 </div>
-<div class="paywall-overlay" id="paywall">
-  <div class="paywall">
-    <h2>周报大师</h2>
-    <div class="sub">免费试用已用完</div>
-    <div class="usage-bar"><div class="count"><span id="usageCount">0</span>/3</div><div class="label">已用次数</div></div>
-    <div class="pricing-row">
-      <div class="pricing-card"><div class="price">0.5<span>元/次</span></div><div class="desc">按次生成</div></div>
-      <div class="pricing-card"><div class="price">9.9<span>元/月</span></div><div class="desc">无限生成</div></div>
-    </div>
-    <div class="qr-section">
-      <div class="qr-label">扫码付款后，微信联系获取激活码</div>
-      <div class="qr-row">
-        <div class="qr-box"><div class="qr-placeholder">支付宝<br>收款码</div><div class="qr-name">支付宝</div></div>
-        <div class="qr-box"><div class="qr-placeholder">微信<br>收款码</div><div class="qr-name">微信</div></div>
-      </div>
-      <div class="qr-hint">付款后添加微信：<strong>你的微信号</strong></div>
-    </div>
-    <div class="unlock-section">
-      <label>已有激活码？输入解锁</label>
-      <div class="unlock-row"><input type="text" id="unlockInput" placeholder="输入激活码"><button id="unlockBtn">验证</button></div>
-      <div id="unlockMsg" class="unlock-msg"></div>
-    </div>
-    <div class="footer-note">激活后长期有效</div>
-  </div>
+<div class="controls-row">
+<div class="control-group"><label>语气风格</label><div class="segmented" id="toneGroup"><button class="active" data-value="正式">正式</button><button data-value="简洁">简洁</button><button data-value="邀功版">邀功版</button></div></div>
+<div class="control-group"><label>角色</label><div class="segmented" id="roleGroup"><button class="active" data-value="普通员工">普通员工</button><button data-value="管理者">管理者</button><button data-value="自由职业者">自由职业者</button></div></div>
 </div>
+<div class="generate-wrap"><button class="btn-primary" id="generateBtn"><i data-lucide="wand-sparkles" width="18" height="18"></i><span>生成周报</span></button></div>
+<div class="section-label">输出</div>
+<div class="output-card"><div class="output-header"><span class="label">生成结果</span><div class="output-actions"><button class="icon-btn" id="copyBtn" data-tooltip="复制到剪贴板" style="display:none"><i data-lucide="clipboard" width="16" height="16"></i></button><button class="icon-btn" id="regenerateBtn" data-tooltip="重新生成" style="display:none"><i data-lucide="refresh-cw" width="16" height="16"></i></button></div></div><div class="output-body" id="outputBody"><div class="output-empty"><i data-lucide="file-text" width="40" height="40" style="display:block;margin:0 auto 12px"></i>输入你的工作内容，点击生成即可获得专业周报</div></div></div>
+<div class="code-bar" id="codeBar">激活码：<span class="code" id="codeDisplay"></span><span class="hint">（保存在此设备，可在页底查看）</span><span class="hint" id="adminLink" style="cursor:pointer;margin-left:8px;display:none"> | 管理员</span></div>
+</div>
+<div class="paywall-overlay" id="paywall"><div class="paywall"><h2>周报大师</h2><div class="sub">免费试用已用完</div><div class="usage-bar"><div class="count"><span id="usageCount">0</span>/3</div><div class="label">已用次数</div></div><div class="pricing-row"><div class="pricing-card"><div class="price">0.5<span>元/次</span></div><div class="desc">按次生成</div></div><div class="pricing-card"><div class="price">9.9<span>元/月</span></div><div class="desc">无限生成</div></div></div><div class="qr-section"><div class="qr-label">扫码付款后，联系微信获取激活码</div><div class="qr-row"><div class="qr-box"><div class="qr-placeholder">支付宝<br>收款码</div><div class="qr-name">支付宝</div></div><div class="qr-box"><div class="qr-placeholder">微信<br>收款码</div><div class="qr-name">微信</div></div></div><div class="qr-hint">付款后添加微信：<strong>你的微信号</strong></div></div><div class="unlock-section"><label>已有激活码？输入解锁</label><div class="unlock-row"><input type="text" id="unlockInput" placeholder="输入激活码"><button id="unlockBtn">验证</button></div><div id="unlockMsg" class="unlock-msg"></div></div><div class="footer-note">激活后长期有效，可在任意设备使用</div></div></div>
 <div class="toast" id="toast"></div>
 <script>
-
 lucide.createIcons();
-var inputText=document.getElementById('inputText');
-var charCount=document.getElementById('charCount');
-var generateBtn=document.getElementById('generateBtn');
-var outputBody=document.getElementById('outputBody');
-var copyBtn=document.getElementById('copyBtn');
-var regenerateBtn=document.getElementById('regenerateBtn');
-var toastEl=document.getElementById('toast');
-document.querySelectorAll('.segmented').forEach(function(g){g.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){g.querySelectorAll('button').forEach(function(x){x.classList.remove('active')});b.classList.add('active')})})});
-inputText.addEventListener('input',function(){charCount.textContent=inputText.value.length});
-var toastTimer=null;
-function showToast(m){toastEl.textContent=m;toastEl.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){toastEl.classList.remove('show')},2500)}
-async function callProxy(prompt){var resp=await fetch('/api/generate-report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(prompt)});if(!resp.ok){var e=await resp.json();throw new Error(e.error||'请求失败 ('+resp.status+')')}var d=await resp.json();return (d.choices?.[0]?.message?.content||'')}
-function buildPrompt(input,tone,role){
-  var sysDesc = '';
-  var roleDesc = '';
-  switch(tone){
-    case '正式': sysDesc = '正式：使用标准职场用语，措辞严谨，数据详实。语气客观专业，避免主观评价。'; break;
-    case '简洁': sysDesc = '简洁：只说重点，每部分3-5条，每条控制在20字以内。删除所有修饰词和背景说明。'; break;
-    case '邀功版': sysDesc = '邀功版：在事实基础上突出个人贡献和主动性，使用更加有力的动词（主导、推动、实现等）。'; break;
-    default: sysDesc = '正式：使用标准职场用语，措辞严谨。';
-  }
-  switch(role){
-    case '普通员工': roleDesc = '执行者视角：重点描述做了什么、遇到什么问题、如何解决的。突出执行力和学习能力。'; break;
-    case '管理者': roleDesc = '管理视角：重点描述团队进度、资源协调、决策过程。突出管理覆盖面和团队产出。'; break;
-    case '自由职业者': roleDesc = '项目视角：重点描述交付物、客户反馈、迭代计划。突出专业度和可靠性。'; break;
-    default: roleDesc = '执行者视角：重点描述执行过程。';
-  }
-  
-  var prompt = '你是一个顶尖的周报写作专家，服务过阿里、腾讯、字节等大厂的员工。你的周报风格专业、数据驱动、逻辑清晰。\n\n请根据用户提供的工作记录，生成一份可以直接提交的周报。\n\n===== 格式要求 =====\n周报必须严格按照以下三个部分输出，每部分用 ### 开头作为标题：\n\n### 一、本周工作内容\n- 按优先级列出工作事项，每行以「- 」开头\n- 每个事项用一句话说清做了什么 + 为什么做 + 产出是什么\n- 例：- 完成用户评论功能上线，支持富文本和图片上传，覆盖全量用户\n\n### 二、关键成果\n- 提炼2-3个核心成果，每个一行，以「- 」开头\n- 每个成果必须包含具体数据或可量化的结果\n- 例：- 评论功能上线后，用户活跃度[请填写具体数据]\n\n### 三、下周计划\n- 列出2-3个具体可执行的工作计划，以「- 」开头\n- 每个计划须包含预期完成时间和交付物\n- 例：- 完成搜索功能一期开发，预计周三提测、周五上线\n\n===== 语气风格 =====\n' + sysDesc + '\n\n===== 角色视角 =====\n' + roleDesc + '\n\n===== 重要规则 =====\n1. 严禁使用模糊词汇如"相关工作""一些优化"等\n2. 每个工作事项必须说清"做了什么"和"产出是什么"\n3. 关键成果如果用户没有提供具体数据，用[请填写具体数据]占位，不要自己编数据\n4. 直接输出周报内容，不要输出额外说明文字\n5. 不要使用任何问候语或结束语\n\n用户的工作记录：\n' + input;
-  return { system: prompt, userInput: input };
-}
-function formatOutput(text){var h='';var lines=text.split('\n');var currentSection=null;var sectionContent=[];function flushSection(){if(currentSection&&sectionContent.length>0){h+='<div class="report-section"><h3>'+currentSection+'</h3>';var j=sectionContent.join('\n');if(/^[-*]\s/m.test(j)){h+='<ul>';sectionContent.forEach(function(l){if(/^[-*]\s/.test(l.trim())){h+='<li>'+l.trim().replace(/^[-*]\s/,'')+'</li>'}else if(l.trim()){h+='<li>'+l.trim()+'</li>'}});h+='</ul>'}else{sectionContent.forEach(function(l){if(l.trim())h+='<p>'+l.trim()+'</p>'})}h+='</div>'}sectionContent=[]}lines.forEach(function(l){if(/^###\s/.test(l.trim())){flushSection();currentSection=l.trim().replace(/^###\s*/,'')}else if(currentSection){sectionContent.push(l)}else{if(l.trim())h+='<p>'+l.trim()+'</p>'}});flushSection();if(!h)h='<div class="report-section"><p>'+text.replace(/\n/g,'<br>')+'</p></div>';return h}
-async function generate(){if(!isPro()){if(getU()>=FREE_LIMIT){paywallEl.classList.add("open");return}addU();if(uCount)uCount.textContent=getU()}var apiKey='dummy';var input=inputText.value.trim();if(!input){showToast('请输\u5165这周的工作内容');inputText.focus();return}var tone=(document.querySelector('#toneGroup .active')?.dataset?.value)||'正式';var role=(document.querySelector('#roleGroup .active')?.dataset?.value)||'普通员工';generateBtn.disabled=true;generateBtn.innerHTML='<div class="spinner"></div><span>生成中...</span>';outputBody.innerHTML='<div class="output-empty"><div class="spinner" style="margin:0 auto 12px"></div>正在生成周报...</div>';copyBtn.style.display='none';regenerateBtn.style.display='none';try{var prompt=buildPrompt(input,tone,role);var result=await callProxy(prompt);outputBody.innerHTML=formatOutput(result);copyBtn.style.display='';regenerateBtn.style.display='';showToast('\u5468报生成完成')}catch(err){outputBody.innerHTML='<div class="output-empty"><i data-lucide="alert-circle" width="40" height="40" style="display:block;margin:0 auto 12px;color:#ef4444"></i><div style="color:#991b1b;font-weight:500;margin-bottom:4px">生成失败</div><div style="font-size:13px">'+err.message+'</div></div>';
-lucide.createIcons();showToast('\u751f\u6210\u5931\u8d25: '+err.message)}finally{generateBtn.disabled=false;generateBtn.innerHTML='<i data-lucide="wand-sparkles" width="18" height="18"></i><span>生成周报</span>';lucide.createIcons()}}
-generateBtn.addEventListener('click',generate);
-regenerateBtn.addEventListener('click',generate);
-copyBtn.addEventListener('click',async function(){var t=(outputBody.textContent||'').trim();if(!t){showToast('没有内容可复制');return}try{await navigator.clipboard.writeText(t);var ic=copyBtn.querySelector('i');ic.setAttribute('data-lucide','check');
-lucide.createIcons();showToast('已复制到剪贴板');setTimeout(function(){ic.setAttribute('data-lucide','clipboard');lucide.createIcons()},1500)}catch(e){showToast('复制失败，请手动复制')}});
-document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();generate()}});
-
-var FREE_LIMIT=3,UNLOCK_CODE="weekly-pro-2026";function getU(){return parseInt(localStorage.getItem("wr_usage")||"0",10)}function addU(){localStorage.setItem("wr_usage",getU()+1)}function isPro(){return localStorage.getItem("wr_pro")==="true"}var paywallEl=document.getElementById("paywall"),uBtn=document.getElementById("unlockBtn"),uInput=document.getElementById("unlockInput"),uMsg=document.getElementById("unlockMsg"),uCount=document.getElementById("usageCount");if(uCount)uCount.textContent=getU();if(uBtn)uBtn.addEventListener("click",function(){var c=uInput.value.trim();if(c===UNLOCK_CODE){localStorage.setItem("wr_pro","true");uMsg.className="unlock-msg ok";uMsg.textContent="激活成功！";setTimeout(function(){paywallEl.classList.remove("open");uMsg.className="unlock-msg"},1500)}else{uMsg.className="unlock-msg err";uMsg.textContent="激活码错误"}});lucide.createIcons();
+var t=document.getElementById('inputText'),c=document.getElementById('charCount'),g=document.getElementById('generateBtn'),o=document.getElementById('outputBody'),cb=document.getElementById('copyBtn'),rb=document.getElementById('regenerateBtn'),te=document.getElementById('toast'),pw=document.getElementById('paywall'),ub=document.getElementById('unlockBtn'),ui=document.getElementById('unlockInput'),um=document.getElementById('unlockMsg'),uc=document.getElementById('usageCount'),cd=document.getElementById('codeDisplay'),cba=document.getElementById('codeBar'),al=document.getElementById('adminLink');
+document.querySelectorAll('.segmented').forEach(function(x){x.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){x.querySelectorAll('button').forEach(function(y){y.classList.remove('active')});b.classList.add('active')})})});
+t.addEventListener('input',function(){c.textContent=t.value.length});
+var tt=null;function st(m){te.textContent=m;te.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){te.classList.remove('show')},2500)}
+var FL=3;function gu(){return parseInt(localStorage.getItem('wu')||'0',10)}function au(){localStorage.setItem('wu',gu()+1)}function ip(){return localStorage.getItem('wp')==='true'}
+var sc=localStorage.getItem('wc');if(sc&&localStorage.getItem('wp')==='true'){cd.textContent=sc;cba.style.display='block'}
+async function cp(p){var r=await fetch('/api/generate-report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});if(!r.ok){var e=await r.json();throw new Error(e.error||'请求失败')}var d=await r.json();return (d.choices?.[0]?.message?.content||'')}
+function bp(i,tn,rl){var sd='',rd='';switch(tn){case'正式':sd='正式：使用标准职场用语，措辞严谨，数据详实。';break;case'简洁':sd='简洁：只说重点，每部分3-5条。';break;case'邀功版':sd='邀功版：突出个人贡献和主动性。';break}switch(rl){case'普通员工':rd='执行者视角：重点描述执行过程和学习能力。';break;case'管理者':rd='管理视角：重点描述团队进度和决策。';break;case'自由职业者':rd='项目视角：重点描述交付物和客户反馈。';break}var p='你是一个顶尖的周报写作专家。请根据用户提供的工作记录生成周报。\n\n格式要求：\n### 一、本周工作内容\n- 按优先级列出工作事项\n- 每个事项说清"做了什么"和"产出是什么"\n\n### 二、关键成果\n- 提炼2-3个核心成果\n- 有数据的写数据，没数据的写[请填写具体数据]\n\n### 三、下周计划\n- 2-3个具体计划，包含时间节点\n\n语气风格：'+sd+'\n角色视角：'+rd+'\n\n重要规则：\n1. 不要编造数据，没数据的用[请填写具体数据]占位\n2. 直接输出周报，不要额外说明\n\n用户的工作记录：\n'+i;return{system:p,userInput:i}}
+function fo(t){var h='',ls=t.split('\n'),cs=null,sc=[];function fs(){if(cs&&sc.length>0){h+='<div class="report-section"><h3>'+cs+'</h3>';var j=sc.join('\n');if(/^[-*]\s/m.test(j)){h+='<ul>';sc.forEach(function(l){if(/^[-*]\s/.test(l.trim())){h+='<li>'+l.trim().replace(/^[-*]\s/,'')+'</li>'}else if(l.trim()){h+='<li>'+l.trim()+'</li>'}});h+='</ul>'}else{sc.forEach(function(l){if(l.trim())h+='<p>'+l.trim()+'</p>'})}h+='</div>'}sc=[]}ls.forEach(function(l){if(/^###\s/.test(l.trim())){fs();cs=l.trim().replace(/^###\s*/,'')}else if(cs){sc.push(l)}else{if(l.trim())h+='<p>'+l.trim()+'</p>'}});fs();if(!h)h='<div class="report-section"><p>'+t.replace(/\n/g,'<br>')+'</p></div>';return h}
+async function gn(){if(!ip()){if(gu()>=FL){pw.classList.add('open');return}au();if(uc)uc.textContent=gu()}var i=t.value.trim();if(!i){st('请输入这周的工作内容');t.focus();return}var tn=(document.querySelector('#toneGroup .active')?.dataset?.value)||'正式',rl=(document.querySelector('#roleGroup .active')?.dataset?.value)||'普通员工';g.disabled=true;g.innerHTML='<div class="spinner"></div><span>生成中...</span>';o.innerHTML='<div class="output-empty"><div class="spinner" style="margin:0 auto 12px"></div>正在生成周报...</div>';cb.style.display='none';rb.style.display='none';try{var pr=bp(i,tn,rl);var r=await cp(pr);o.innerHTML=fo(r);cb.style.display='';rb.style.display='';st('周报生成完成')}catch(e){o.innerHTML='<div class="output-empty"><i data-lucide="alert-circle" width="40" height="40" style="display:block;margin:0 auto 12px;color:#ef4444"></i><div style="color:#991b1b;font-weight:500;margin-bottom:4px">生成失败</div><div style="font-size:13px">'+e.message+'</div></div>';lucide.createIcons();st('生成失败')}finally{g.disabled=false;g.innerHTML='<i data-lucide="wand-sparkles" width="18" height="18"></i><span>生成周报</span>';lucide.createIcons()}}
+g.addEventListener('click',gn);rb.addEventListener('click',gn);
+cb.addEventListener('click',async function(){var tx=(o.textContent||'').trim();if(!tx){st('没有内容可复制');return}try{await navigator.clipboard.writeText(tx);st('已复制')}catch(e){st('复制失败')}});
+ub.addEventListener('click',async function(){var cdv=ui.value.trim();if(!cdv){um.className='unlock-msg err';um.textContent='请输入激活码';return}try{var r=await fetch('/api/generate-report?action=verify-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:cdv})});var d=await r.json();if(d.valid){localStorage.setItem('wp','true');localStorage.setItem('wc',cdv);um.className='unlock-msg ok';um.textContent='激活成功！';cd.textContent=cdv;cba.style.display='block';setTimeout(function(){pw.classList.remove('open');um.className='unlock-msg'},1500)}else{um.className='unlock-msg err';um.textContent='激活码无效'}}catch(e){um.className='unlock-msg err';um.textContent='验证失败'}});
+document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();gn()}});
+lucide.createIcons();
 </script>
 </body>
 </html>
