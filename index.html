@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>周报大师 - AI 周报生成器</title>
+<title>周报大师 - AI 周报/日报生成器</title>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#f4f5f7;--surface:#fff;--border:#e2e4e8;--text:#1a1d23;--text2:#6b7280;--blue:#2563eb;--radius:8px;--mw:680px;--font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC",sans-serif}
 html{font-size:16px}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
-.hd{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;gap:8px;font-weight:600;font-size:17px;position:sticky;top:0;z-index:10}
+.hd{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;gap:8px;font-weight:600;font-size:17px}
 .hd svg{color:var(--blue)}
 .ct{max-width:var(--mw);margin:0 auto;padding:32px 20px 80px}
 .sl{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;margin-bottom:8px}
@@ -22,13 +22,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .cg{flex:1;min-width:180px}
 .cg label{font-size:13px;font-weight:500;color:var(--text2);display:block;margin-bottom:6px}
 .sg{display:flex;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
-.sg button{flex:1;border:none;background:transparent;padding:7px 12px;font:13px var(--font);color:var(--text2);cursor:pointer;white-space:nowrap}
+.sg button{flex:1;border:none;background:transparent;padding:7px 12px;font:13px var(--font);color:var(--text2);cursor:pointer}
 .sg button:not(:last-child){border-right:1px solid var(--border)}
 .sg button.act{background:var(--blue);color:#fff;font-weight:500}
 .gw{margin-bottom:32px}
 .bp{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border:none;border-radius:var(--radius);background:var(--blue);color:#fff;font:600 15px var(--font);cursor:pointer}
 .bp:hover{background:#1d4ed8}
-.bp:disabled{opacity:.5;cursor:default}
+.bp:disabled{opacity:.5}
 .bp .sp{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:s .6s linear infinite}
 @keyframes s{to{transform:rotate(360deg)}}
 .oc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden}
@@ -36,14 +36,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .oh .la{font-size:13px;font-weight:600;color:var(--text2)}
 .oa{display:flex;gap:4px}
 .ib{background:transparent;border:none;width:36px;height:36px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:var(--text2);cursor:pointer}
-.ib:hover{background:#f0f1f3;color:var(--text)}
+.ib:hover{background:#f0f1f3}
 .ob{padding:20px 24px;font-size:14px;line-height:1.8;white-space:pre-wrap;word-wrap:break-word}
 .ob .rs{margin-bottom:20px}
 .ob .rs h3{font-size:14px;font-weight:600;color:var(--blue);margin-bottom:8px;border-bottom:1px solid var(--border)}
 .ob .rs ul{padding-left:20px}
-.oe{text-align:center;padding:40px 24px;color:var(--text2);font-size:14px}
+.oe{text-align:center;padding:40px 24px;color:var(--text2)}
 .ts{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1d23;color:#fff;font-size:13px;padding:10px 20px;border-radius:var(--radius);opacity:0;transition:all .3s;pointer-events:none;z-index:200}
 .ts.sh{opacity:1;transform:translateX(-50%) translateY(0)}
+.hz{font-size:11px;color:#adb5bd;text-align:center;padding:12px 20px}
+.hz a{color:#2563eb;text-decoration:none}
 @media(max-width:560px){.ct{padding:20px 16px 80px}.cr{flex-direction:column}.ob{padding:16px}}
 </style>
 </head>
@@ -51,29 +53,31 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div class="hd"><i data-lucide="file-text" width="20" height="20"></i><span>周报大师</span></div>
 <div class="ct">
 <div class="sl">输入</div>
-<div class="ic"><textarea id="it" placeholder="把这周做的事简单写下来，比如：&#10;&#10;上线了用户评论功能&#10;修复了三个线上 Bug&#10;跟设计团队开了两次需求对齐会"></textarea><div class="cc"><span id="cc">0</span> 字</div></div>
-<div class="cr"><div class="cg"><label>报告类型</label><div class="sg" id="rtg"><button class="act" data-v="weekly">周报</button><button data-v="daily">日报</button></div></div>
-  <div class="cg"><label>报告类型</label><div class="sg" id="rtg"><button class="act" data-v="weekly">周报</button><button data-v="daily">日报</button></div></div>
-  <div class="cg"><label>语气风格</label><div class="sg" id="tg"><button class="act" data-v="正式">正式</button><button data-v="简洁">简洁</button><button data-v="邀功版">邀功版</button></div></div>
-<div class="cg"><label>角色</label><div class="sg" id="rg"><button class="act" data-v="普通员工">普通员工</button><button data-v="管理者">管理者</button><button data-v="自由职业者">自由职业者</button></div></div>
+<div class="ic"><textarea id="it" placeholder="把这周/今天做的事简单写下来"></textarea><div class="cc"><span id="cc">0</span> 字</div></div>
+<div class="cr">
+<div class="cg"><label>报告类型</label><div class="sg" id="rtg"><button class="act" data-v="weekly">周报</button><button data-v="daily">日报</button></div></div>
+<div class="cg"><label>语气</label><div class="sg" id="tg"><button class="act" data-v="正式">正式</button><button data-v="简洁">简洁</button><button data-v="邀功版">邀功版</button></div></div>
+<div class="cg"><label>角色</label><div class="sg" id="rg"><button class="act" data-v="普通员工">员工</button><button data-v="管理者">管理者</button><button data-v="自由职业">自由职业</button></div></div>
 </div>
-<div class="gw"><button class="bp" id="gb"><i data-lucide="wand-sparkles" width="18" height="18"></i><span>生成周报</span></button></div>
+<div class="gw"><button class="bp" id="gb"><i data-lucide="wand-sparkles" width="18" height="18"></i><span>生成</span></button></div>
 <div class="sl">输出</div>
-<div class="oc"><div class="oh"><span class="la">生成结果</span><div class="oa"><button class="ib" id="cpb" style="display:none"><i data-lucide="clipboard" width="16" height="16"></i></button><button class="ib" id="rgb" style="display:none"><i data-lucide="refresh-cw" width="16" height="16"></i></button></div></div><div class="ob" id="ob"><div class="oe"><i data-lucide="file-text" width="40" height="40" style="display:block;margin:0 auto 12px"></i>输入你的工作内容，点击生成即可获得专业周报</div></div></div>
+<div class="oc"><div class="oh"><span class="la">结果</span><div class="oa"><button class="ib" id="cpb" style="display:none"><i data-lucide="clipboard" width="16" height="16"></i></button><button class="ib" id="rgb" style="display:none"><i data-lucide="refresh-cw" width="16" height="16"></i></button></div></div><div class="ob" id="ob"><div class="oe"><i data-lucide="file-text" width="40" height="40" style="display:block;margin:0 auto 12px"></i>输入内容，点击生成</div></div></div>
+<div class="hz">由 DeepSeek API 驱动 · 免费使用 · <a href="https://github.com/bai-mai/weekly-report-master" target="_blank">源码</a></div>
 </div>
 <div class="ts" id="ts"></div>
 <script>
+var KEY='替换为你的DeepSeek密钥';
 lucide.createIcons();
 var $=function(id){return document.getElementById(id)},it=$('it'),cc2=$('cc'),gb=$('gb'),ob=$('ob'),cpb=$('cpb'),rgb=$('rgb'),ts=$('ts');
 document.querySelectorAll('.sg').forEach(function(g){g.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){g.querySelectorAll('button').forEach(function(x){x.classList.remove('act')});b.classList.add('act')})})});
 it.addEventListener('input',function(){cc2.textContent=it.value.length});
 var _t=null;function st(m){ts.textContent=m;ts.classList.add('sh');clearTimeout(_t);_t=setTimeout(function(){ts.classList.remove('sh')},2500)}
-async function cp(p){var r=await fetch('/api/generate-report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});if(!r.ok){var e=await r.json();throw new Error(e.error||'请求失败')}var d=await r.json();return (d.choices?.[0]?.message?.content||'')}
-function bp(i,tn,rl,rt){var sd='';switch(tn){case'正式':sd='\n【语气】\n正式：使用标准职场书面语言，措辞严谨专业。避免口语化。';break;case'简洁':sd='\n【语气】\n简洁：每条15字以内，只说做了什么和结果。';break;case'邀功版':sd='\n【语气】\n邀功版：突出个人贡献，使用主导、推动、实现等有力动词。';break;}var rd='';switch(rl){case'普通员工':rd='\n【角色】\n执行者角度：重点说明执行过程和技术细节。';break;case'管理者':rd='\n【角色】\n管理者角度：重点说明团队产出和决策逻辑。';break;case'自由职业者':rd='\n【角色】\n项目角度：重点说明交付物和客户反馈。';break;}var wk='你是一位周报写作专家。\n\n格式：\n### 一、本周工作内容\n- 工作事项及产出\n\n### 二、关键成果\n- 有数据的写数据，没数据的用[请填写具体数据]\n\n### 三、下周计划\n- 具体计划\n'+sd+rd+'\n\n规则：\n1. 严禁编造数据\n2. 每条说清做了什么和产出\n3. 直接输出正文\n\n用户记录：\n'+i;var dy='你是一位日报写作专家。\n\n格式：\n### 今日完成\n- 做了什么+结果\n\n### 遇到的问题\n- 问题及解决方案\n\n### 明日计划\n- 具体计划\n'+sd+rd+'\n\n规则：\n1. 严禁编造数据\n2. 直接输出正文\n\n用户记录：\n'+i;var p=rt==='daily'?dy:wk;return{system:p,userInput:i}}function fo(t){var h='',ls=t.split('\n'),cs=null,sa=[];function fs(){if(cs&&sa.length>0){h+='<div class="rs"><h3>'+cs+'</h3>';var j=sa.join('\n');if(/^[-*]\s/m.test(j)){h+='<ul>';sa.forEach(function(l){if(/^[-*]\s/.test(l.trim())){h+='<li>'+l.trim().replace(/^[-*]\s/,'')+'</li>'}else if(l.trim()){h+='<li>'+l.trim()+'</li>'}});h+='</ul>'}else{sa.forEach(function(l){if(l.trim())h+='<p>'+l.trim()+'</p>'})}h+='</div>'}sa=[]}ls.forEach(function(l){if(/^###\s/.test(l.trim())){fs();cs=l.trim().replace(/^###\s*/,'')}else if(cs){sa.push(l)}else{if(l.trim())h+='<p>'+l.trim()+'</p>'}});fs();if(!h)h='<div class="rs"><p>'+t.replace(/\n/g,'<br>')+'</p></div>';return h}
-async function gn(){var rt=(document.querySelector('#rtg .act')?.dataset?.v)||'weekly';var i=it.value.trim();if(!i){st('请输入这周的工作内容');it.focus();return}var tn=(document.querySelector('#tg .act')?.dataset?.v)||'正式',rl=(document.querySelector('#rg .act')?.dataset?.v)||'普通员工';gb.disabled=true;gb.innerHTML='<div class="sp"></div><span>生成中...</span>';ob.innerHTML='<div class="oe"><div class="sp" style="margin:0 auto 12px"></div>正在生成周报...</div>';cpb.style.display='none';rgb.style.display='none';try{var pr=bp(i,tn,rl,rt);var r=await cp(pr);ob.innerHTML=fo(r);cpb.style.display='';rgb.style.display='';st('生成完成')}catch(e){ob.innerHTML='<div class="oe"><i data-lucide="alert-circle" width="40" height="40" style="display:block;margin:0 auto 12px;color:#ef4444"></i><div style="color:#991b1b;font-weight:500;margin-bottom:4px">生成失败</div><div style="font-size:13px">'+e.message+'</div></div>';lucide.createIcons();st('生成失败')}finally{gb.disabled=false;gb.innerHTML='<i data-lucide="wand-sparkles" width="18" height="18"></i><span>生成周报</span>';lucide.createIcons()}}
+async function gn(){var i=it.value.trim();if(!i){st('请输入内容');it.focus();return}var rt=(document.querySelector('#rtg .act')?.dataset?.v)||'weekly',tn=(document.querySelector('#tg .act')?.dataset?.v)||'正式',rl=(document.querySelector('#rg .act')?.dataset?.v)||'普通员工';var ms=[{role:'system',content:bp(i,tn,rl,rt)}];gb.disabled=true;gb.innerHTML='<div class="sp"></div><span>生成中...</span>';ob.innerHTML='<div class="oe"><div class="sp" style="margin:0 auto 12px"></div>生成中...</div>';cpb.style.display='none';rgb.style.display='none';try{var r=await fetch('https://api.deepseek.com/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY},body:JSON.stringify({model:'deepseek-chat',messages:ms,temperature:0.7,max_tokens:1024})});if(!r.ok)throw new Error('API请求失败');var d=await r.json();var t=d.choices?.[0]?.message?.content||'';ob.innerHTML=fo(t);cpb.style.display='';rgb.style.display='';st('生成完成')}catch(e){ob.innerHTML='<div class="oe"><i data-lucide="alert-circle" width="40" height="40" style="display:block;margin:0 auto 12px;color:#ef4444"></i><div style="color:#991b1b;font-weight:500;margin-bottom:4px">生成失败</div><div style="font-size:13px">'+e.message+'</div></div>';lucide.createIcons();st('失败')}finally{gb.disabled=false;gb.innerHTML='<i data-lucide="wand-sparkles" width="18" height="18"></i><span>生成</span>';lucide.createIcons()}}
 gb.addEventListener('click',gn);rgb.addEventListener('click',gn);
-cpb.addEventListener('click',async function(){var t=(ob.textContent||'').trim();if(!t)return;try{await navigator.clipboard.writeText(t);st('已复制')}catch(e){st('复制失败')}});
+cpb.addEventListener('click',async function(){var t=(ob.textContent||'').trim();if(!t)return;try{await navigator.clipboard.writeText(t);st('已复制')}catch(e){}});
 document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();gn()}});
+function bp(i,tn,rl,rt){var sd='',rd='';switch(tn){case'正式':sd='\n【语气】\n正式：标准职场书面语言，措辞严谨。';break;case'简洁':sd='\n【语气】\n简洁：每条15字以内，只说重点。';break;case'邀功版':sd='\n【语气】\n邀功版：突出个人贡献，使用主导、推动等动词。';break}switch(rl){case'普通员工':rd='\n【角色】\n执行者角度，侧重执行过程。';break;case'管理者':rd='\n【角色】\n管理角度，侧重团队产出。';break;case'自由职业者':rd='\n【角色】\n项目角度，侧重交付物。';break}var w='你是一位周报写作专家。\n\n格式：\n### 一、本周工作内容\n- 做了什么+结果\n\n### 二、关键成果\n- 有数据的写数据，没数据用[请填写具体数据]\n\n### 三、下周计划\n- 具体计划\n'+sd+rd+'\n\n规则：\n1. 严禁编造数据\n2. 直接输出正文\n\n用户记录：\n'+i;var d='你是一位日报写作专家。\n\n格式：\n### 今日完成\n- 做了什么+结果\n\n### 遇到的问题\n- 问题及方案\n\n### 明日计划\n- 具体计划\n'+sd+rd+'\n\n规则：\n1. 严禁编造数据\n2. 直接输出正文\n\n用户记录：\n'+i;return rt==='daily'?d:w}
+function fo(t){var h='',ls=t.split('\n'),cs=null,sa=[];function fs(){if(cs&&sa.length>0){h+='<div class="rs"><h3>'+cs+'</h3>';var j=sa.join('\n');if(/^[-*]\s/m.test(j)){h+='<ul>';sa.forEach(function(l){if(/^[-*]\s/.test(l.trim())){h+='<li>'+l.trim().replace(/^[-*]\s/,'')+'</li>'}else if(l.trim()){h+='<li>'+l.trim()+'</li>'}});h+='</ul>'}else{sa.forEach(function(l){if(l.trim())h+='<p>'+l.trim()+'</p>'})}h+='</div>'}sa=[]}ls.forEach(function(l){if(/^###\s/.test(l.trim())){fs();cs=l.trim().replace(/^###\s*/,'')}else if(cs){sa.push(l)}else{if(l.trim())h+='<p>'+l.trim()+'</p>'}});fs();if(!h)h='<div class="rs"><p>'+t.replace(/\n/g,'<br>')+'</p></div>';return h}
 lucide.createIcons();
 </script>
 </body>
