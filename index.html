@@ -44,34 +44,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .oe{text-align:center;padding:40px 24px;color:var(--text2);font-size:14px}
 .ts{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1d23;color:#fff;font-size:13px;padding:10px 20px;border-radius:var(--radius);opacity:0;transition:all .3s;pointer-events:none;z-index:200}
 .ts.sh{opacity:1;transform:translateX(-50%) translateY(0)}
-.po{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;padding:20px}
-.po.op{display:flex}
-.pw{background:#fff;border-radius:12px;max-width:460px;width:100%;padding:28px 24px;box-shadow:0 8px 32px rgba(0,0,0,.15);max-height:90vh;overflow-y:auto}
-.pw h2{font-size:18px;font-weight:700;margin-bottom:4px;text-align:center}
-.pw .sb{font-size:13px;color:#6b7280;text-align:center;margin-bottom:20px}
-.ub{text-align:center;margin-bottom:20px}
-.ub .ct2{font-size:36px;font-weight:700;color:var(--blue)}
-.pr{display:flex;gap:12px;margin-bottom:20px}
-.pc{flex:1;border:1px solid #e2e4e8;border-radius:8px;padding:14px;text-align:center}
-.pc .pr2{font-size:22px;font-weight:700}
-.qs{text-align:center;margin-bottom:20px;padding:16px;background:#f8f9fa;border-radius:8px}
-.qs .ql{font-size:13px;font-weight:500;margin-bottom:8px}
-.qr2{display:flex;gap:16px;justify-content:center}
-.qb{width:120px;height:140px;background:#fff;border:1px solid #e2e4e8;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px}
-.qb .qp{width:100px;height:100px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-size:12px;color:#6b7280}
-.qb .qn{font-size:11px;color:#6b7280;margin-top:4px}
-.us{border-top:1px solid #e2e4e8;padding-top:16px}
-.us label{font-size:13px;font-weight:500;display:block;margin-bottom:6px}
-.ur{display:flex;gap:8px}
-.ur input{flex:1;padding:8px 12px;border:1px solid #e2e4e8;border-radius:6px;font:14px var(--font);outline:none}
-.ur input:focus{border-color:var(--blue)}
-.ur button{padding:8px 20px;background:var(--blue);border:none;border-radius:6px;color:#fff;font:500 14px var(--font);cursor:pointer}
-.um{font-size:13px;margin-top:6px;min-height:20px}
-.um.ok{color:#065f46}
-.um.er{color:#991b1b}
-.fn{text-align:center;font-size:11px;color:#adb5bd;margin-top:12px}
-.cb2{text-align:center;padding:12px 20px 0;font-size:13px;color:#6b7280;display:none}
-.cb2 .cd{font-weight:600;color:var(--blue);letter-spacing:1px}
 @media(max-width:560px){.ct{padding:20px 16px 80px}.cr{flex-direction:column}.ob{padding:16px}}
 </style>
 </head>
@@ -87,25 +59,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div class="gw"><button class="bp" id="gb"><i data-lucide="wand-sparkles" width="18" height="18"></i><span>生成周报</span></button></div>
 <div class="sl">输出</div>
 <div class="oc"><div class="oh"><span class="la">生成结果</span><div class="oa"><button class="ib" id="cpb" style="display:none"><i data-lucide="clipboard" width="16" height="16"></i></button><button class="ib" id="rgb" style="display:none"><i data-lucide="refresh-cw" width="16" height="16"></i></button></div></div><div class="ob" id="ob"><div class="oe"><i data-lucide="file-text" width="40" height="40" style="display:block;margin:0 auto 12px"></i>输入你的工作内容，点击生成即可获得专业周报</div></div></div>
-<div class="cb2" id="cba">激活码：<span class="cd" id="cd"></span></div>
 </div>
-<div class="po" id="pw"><div class="pw"><h2>周报大师</h2><div class="sb">免费试用已用完</div><div class="ub"><div class="ct2"><span id="uc">0</span>/3</div><div>已用次数</div></div><div class="pr"><div class="pc"><div class="pr2">0.5<span style="font-size:13px;font-weight:400;color:#6b7280">元/次</span></div><div style="font-size:12px;color:#6b7280;margin-top:4px">按次生成</div></div><div class="pc"><div class="pr2">9.9<span style="font-size:13px;font-weight:400;color:#6b7280">元/月</span></div><div style="font-size:12px;color:#6b7280;margin-top:4px">无限生成</div></div></div><div class="qs"><div class="ql">扫码付款后，微信联系获取激活码</div><div class="qr2"><div class="qb"><div class="qp">支付宝</div><div class="qn">支付宝</div></div><div class="qb"><div class="qp">微信</div><div class="qn">微信</div></div></div><div style="font-size:12px;color:#6b7280;margin-top:6px">付款后添加微信：<strong>填写你的微信号</strong></div></div><div class="us"><label>已有激活码？输入解锁</label><div class="ur"><input type="text" id="ui" placeholder="输入激活码"><button id="ub2">验证</button></div><div id="um" class="um"></div></div><div class="fn">激活后长期有效，可在任意设备使用</div></div></div>
 <div class="ts" id="ts"></div>
 <script>
 lucide.createIcons();
-var $=function(id){return document.getElementById(id)},it=$('it'),cc2=$('cc'),gb=$('gb'),ob=$('ob'),cpb=$('cpb'),rgb=$('rgb'),ts=$('ts'),pw=$('pw'),ub2=$('ub2'),ui=$('ui'),um=$('um'),uc=$('uc'),cd=$('cd'),cba=$('cba');
+var $=function(id){return document.getElementById(id)},it=$('it'),cc2=$('cc'),gb=$('gb'),ob=$('ob'),cpb=$('cpb'),rgb=$('rgb'),ts=$('ts');
 document.querySelectorAll('.sg').forEach(function(g){g.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){g.querySelectorAll('button').forEach(function(x){x.classList.remove('act')});b.classList.add('act')})})});
 it.addEventListener('input',function(){cc2.textContent=it.value.length});
 var _t=null;function st(m){ts.textContent=m;ts.classList.add('sh');clearTimeout(_t);_t=setTimeout(function(){ts.classList.remove('sh')},2500)}
-var FL=3;function gu(){return parseInt(localStorage.getItem('wu')||'0',10)}function au(){localStorage.setItem('wu',gu()+1)}function ip(){return localStorage.getItem('wp')==='true'}function gt(){return parseInt(localStorage.getItem('wt')||'0',10)}
-var sc=localStorage.getItem('wc');if(sc&&ip()){cd.textContent=sc;cba.style.display='block'}
 async function cp(p){var r=await fetch('/api/generate-report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});if(!r.ok){var e=await r.json();throw new Error(e.error||'请求失败')}var d=await r.json();return (d.choices?.[0]?.message?.content||'')}
-function bp(i,tn,rl){var sd='',rd='';switch(tn){case'正式':sd='正式：标准职场用语，措辞严谨';break;case'简洁':sd='简洁：只说重点';break;case'邀功版':sd='邀功版：突出个人贡献'}switch(rl){case'普通员工':rd='执行者视角';break;case'管理者':rd='管理视角';break;case'自由职业者':rd='项目视角'}var p='你是一个周报写作专家。根据以下要求生成周报。\n\n格式：\n### 一、本周工作内容\n- 工作事项及产出\n\n### 二、关键成果\n- 有数据的写数据，没数据写[请填写具体数据]\n\n### 三、下周计划\n- 具体可行计划\n\n语气：'+sd+'\n角色：'+rd+'\n\n不要编造数据，不要额外说明。\n\n用户记录：\n'+i;return{system:p,userInput:i}}
+function bp(i,tn,rl){var sd='',rd='';switch(tn){case'正式':sd='正式：标准职场用语，措辞严谨';break;case'简洁':sd='简洁：只说重点';break;case'邀功版':sd='邀功版：突出个人贡献'}switch(rl){case'普通员工':rd='执行者视角';break;case'管理者':rd='管理视角';break;case'自由职业者':rd='项目视角'}var p='你是一个周报写作专家。根据以下要求生成周报。\n\n格式：\n### 一、本周工作内容\n- 工作事项及产出\n\n### 二、关键成果\n- 有数据的写数据，没数据写[请填写具体数据]\n\n### 三、下周计划\n- 具体可行的计划\n\n语气：'+sd+'\n角色：'+rd+'\n\n不要编造数据，不要额外说明。\n\n用户记录：\n'+i;return{system:p,userInput:i}}
 function fo(t){var h='',ls=t.split('\n'),cs=null,sa=[];function fs(){if(cs&&sa.length>0){h+='<div class="rs"><h3>'+cs+'</h3>';var j=sa.join('\n');if(/^[-*]\s/m.test(j)){h+='<ul>';sa.forEach(function(l){if(/^[-*]\s/.test(l.trim())){h+='<li>'+l.trim().replace(/^[-*]\s/,'')+'</li>'}else if(l.trim()){h+='<li>'+l.trim()+'</li>'}});h+='</ul>'}else{sa.forEach(function(l){if(l.trim())h+='<p>'+l.trim()+'</p>'})}h+='</div>'}sa=[]}ls.forEach(function(l){if(/^###\s/.test(l.trim())){fs();cs=l.trim().replace(/^###\s*/,'')}else if(cs){sa.push(l)}else{if(l.trim())h+='<p>'+l.trim()+'</p>'}});fs();if(!h)h='<div class="rs"><p>'+t.replace(/\n/g,'<br>')+'</p></div>';return h}
-async function gn(){if(!ip()){if(gu()>=FL&&gu()>=gt()){pw.classList.add('op');return}au();if(uc)uc.textContent=gu()}var i=it.value.trim();if(!i){st('请输入这周的工作内容');it.focus();return}var tn=(document.querySelector('#tg .act')?.dataset?.v)||'正式',rl=(document.querySelector('#rg .act')?.dataset?.v)||'普通员工';gb.disabled=true;gb.innerHTML='<div class="sp"></div><span>生成中...</span>';ob.innerHTML='<div class="oe"><div class="sp" style="margin:0 auto 12px"></div>正在生成周报...</div>';cpb.style.display='none';rgb.style.display='none';try{var pr=bp(i,tn,rl);var r=await cp(pr);ob.innerHTML=fo(r);cpb.style.display='';rgb.style.display='';st('生成完成')}catch(e){ob.innerHTML='<div class="oe"><i data-lucide="alert-circle" width="40" height="40" style="display:block;margin:0 auto 12px;color:#ef4444"></i><div style="color:#991b1b;font-weight:500;margin-bottom:4px">生成失败</div><div style="font-size:13px">'+e.message+'</div></div>';lucide.createIcons();st('生成失败')}finally{gb.disabled=false;gb.innerHTML='<i data-lucide="wand-sparkles" width="18" height="18"></i><span>生成周报</span>';lucide.createIcons()}}
+async function gn(){var i=it.value.trim();if(!i){st('请输入这周的工作内容');it.focus();return}var tn=(document.querySelector('#tg .act')?.dataset?.v)||'正式',rl=(document.querySelector('#rg .act')?.dataset?.v)||'普通员工';gb.disabled=true;gb.innerHTML='<div class="sp"></div><span>生成中...</span>';ob.innerHTML='<div class="oe"><div class="sp" style="margin:0 auto 12px"></div>正在生成周报...</div>';cpb.style.display='none';rgb.style.display='none';try{var pr=bp(i,tn,rl);var r=await cp(pr);ob.innerHTML=fo(r);cpb.style.display='';rgb.style.display='';st('生成完成')}catch(e){ob.innerHTML='<div class="oe"><i data-lucide="alert-circle" width="40" height="40" style="display:block;margin:0 auto 12px;color:#ef4444"></i><div style="color:#991b1b;font-weight:500;margin-bottom:4px">生成失败</div><div style="font-size:13px">'+e.message+'</div></div>';lucide.createIcons();st('生成失败')}finally{gb.disabled=false;gb.innerHTML='<i data-lucide="wand-sparkles" width="18" height="18"></i><span>生成周报</span>';lucide.createIcons()}}
 gb.addEventListener('click',gn);rgb.addEventListener('click',gn);
 cpb.addEventListener('click',async function(){var t=(ob.textContent||'').trim();if(!t)return;try{await navigator.clipboard.writeText(t);st('已复制')}catch(e){st('复制失败')}});
-ub2.addEventListener('click',async function(){var c=ui.value.trim();if(!c){um.className='um er';um.textContent='请输入激活码';return}try{var r=await fetch('/api/generate-report?action=verify-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:c})});var d=await r.json();if(d.valid&&d.type==='pro'){localStorage.setItem('wp','true');localStorage.setItem('wc',c);um.className='um ok';um.textContent='已开通包月，无限使用！';cd.textContent=c;cba.style.display='block';setTimeout(function(){pw.classList.remove('op');um.className='um'},2000)}else if(d.valid&&d.type==='usage'){var cur=parseInt(localStorage.getItem('wt')||'0',10);localStorage.setItem('wt',String(cur+5));localStorage.setItem('wc',c);um.className='um ok';um.textContent='已增加5次生成次数！';cd.textContent=c;cba.style.display='block';if(uc)uc.textContent=gu();setTimeout(function(){pw.classList.remove('op');um.className='um'},2000)}else{um.className='um er';um.textContent='激活码无效'}}catch(e){um.className='um er';um.textContent='验证失败'}});
 document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();gn()}});
 lucide.createIcons();
 </script>
