@@ -1,10 +1,10 @@
 [build]
-  command = "echo 'Static site, no build needed'"
+  command = "echo 'Static site'"
   publish = "."
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "/api/generate-report"
-  to = "/.netlify/functions/generate-report"
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
   status = 200
   force = true
